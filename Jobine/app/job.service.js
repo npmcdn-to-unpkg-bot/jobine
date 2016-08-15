@@ -29,36 +29,35 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxj
                 Observable_1 = Observable_1_1;
             }],
         execute: function() {
-            JobService = (function () {
-                function JobService(http) {
+            let JobService = class JobService {
+                constructor(http) {
                     this.http = http;
                     this._jobineUrl = 'http://localhost:4711/api/jobs';
                     this.http = http;
                 }
-                JobService.prototype.getJobs = function () {
+                getJobs() {
                     return this.http.get(this._jobineUrl)
                         .map(this.extractData)
                         .catch(this.handleError);
-                };
-                JobService.prototype.extractData = function (res) {
+                }
+                extractData(res) {
                     if (res.status < 200 || res.status >= 300) {
                         throw new Error('Bad response status: ' + res.status);
                     }
-                    var body = res.json();
+                    let body = res.json();
                     return body || {};
-                };
-                JobService.prototype.handleError = function (error) {
+                }
+                handleError(error) {
                     // In a real world app, we might send the error to remote logging infrastructure
-                    var errMsg = error.message || 'Server error';
+                    let errMsg = error.message || 'Server error';
                     console.error(errMsg); // log to console instead
                     return Observable_1.Observable.throw(errMsg);
-                };
-                JobService = __decorate([
-                    core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_1.Http])
-                ], JobService);
-                return JobService;
-            }());
+                }
+            };
+            JobService = __decorate([
+                core_1.Injectable(), 
+                __metadata('design:paramtypes', [http_1.Http])
+            ], JobService);
             exports_1("JobService", JobService);
         }
     }

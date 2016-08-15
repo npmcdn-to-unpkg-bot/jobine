@@ -31,7 +31,7 @@ import {Menu} from "./menu";
                 </paper-tabs>  
             </paper-toolbar>
             <section id="section">             
-                <iron-pages selected="0">
+                <iron-pages id="pages" selected="0">
                   <div>  
                     <google-map   latitude={{lat}} longitude={{long}} disableDefaultUI >
                         <google-map-marker *ngFor="let marker of jobList" latitude="{{marker.job.location.latitude}}" longitude="{{marker.job.location.longitude}}" title="{{marker.job.name}}"></google-map-marker>
@@ -42,7 +42,7 @@ import {Menu} from "./menu";
                   </div>                 
                 </iron-pages>
                 <paper-toolbar id="footToolbar">
-                    <paper-button toggles class="fancy" on-click="getJobs" >Switch places</paper-button>
+                    <paper-button toggles class="fancy" on-click="getJobs()" >Switch places</paper-button>
                 </paper-toolbar>
             </section>
 
@@ -68,18 +68,17 @@ export class Jobine implements OnInit {
     jobList:Job[];
     lat:string;
     long:string;
-
     errorMessage:string;
 
     ngOnInit() {
         this.lat = "45.5602804";  //,-73.8516124
         this.long = "-73.8516124";
 
+        var tabs =document.querySelector('paper-tabs');
 
-        var tabs = document.querySelector('paper-tabs');
-        var pages =  document.querySelector('iron-pages');
         tabs.addEventListener('iron-select', function() {
-            pages.selected = tabs.selected;
+           var pages = <'iron-pages'>document.querySelector('#pages');
+            pages.select(this.selected);
         });
         this.getJobs();
     }

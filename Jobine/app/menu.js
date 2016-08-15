@@ -24,19 +24,21 @@ System.register(['@angular/core', '@angular/common'], function(exports_1, contex
                 common_1 = common_1_1;
             }],
         execute: function() {
-            Menu = (function () {
-                function Menu() {
-                }
-                Menu = __decorate([
-                    core_1.Component({
-                        selector: 'menu',
-                        directives: [common_1.FORM_DIRECTIVES],
-                        template: "\n   <div>\n   <li>TROUVER UNE JOBINE</li>\n   <li>OFFRIR UNE JOBINE</li>\n   </div>\n  "
-                    }), 
-                    __metadata('design:paramtypes', [])
-                ], Menu);
-                return Menu;
-            }());
+            let Menu = class Menu {
+            };
+            Menu = __decorate([
+                core_1.Component({
+                    selector: 'menu',
+                    directives: [common_1.FORM_DIRECTIVES],
+                    template: `
+   <div>
+   <li>TROUVER UNE JOBINE</li>
+   <li>OFFRIR UNE JOBINE</li>
+   </div>
+  `
+                }), 
+                __metadata('design:paramtypes', [])
+            ], Menu);
             exports_1("Menu", Menu);
         }
     }

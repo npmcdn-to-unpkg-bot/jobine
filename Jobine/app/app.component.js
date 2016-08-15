@@ -33,44 +33,82 @@ System.register(["@angular/core", '@angular/http', '@angular/router-deprecated',
                 menu_1 = menu_1_1;
             }],
         execute: function() {
-            Jobine = (function () {
-                function Jobine(_jobService, _router) {
+            let Jobine = class Jobine {
+                constructor(_jobService, _router) {
                     this._jobService = _jobService;
                     this._router = _router;
                 }
-                Jobine.prototype.ngOnInit = function () {
+                ngOnInit() {
                     this.lat = "45.5602804"; //,-73.8516124
                     this.long = "-73.8516124";
                     var tabs = document.querySelector('paper-tabs');
-                    var pages = document.querySelector('iron-pages');
                     tabs.addEventListener('iron-select', function () {
-                        pages.selected = tabs.selected;
+                        var pages = document.querySelector('#pages');
+                        pages.select(this.selected);
                     });
                     this.getJobs();
-                };
-                Jobine.prototype.getJobs = function () {
-                    var _this = this;
+                }
+                getJobs() {
                     this._jobService.getJobs()
-                        .subscribe(function (jobs) { return _this.jobList = jobs; }, function (error) { return _this.errorMessage = error; });
-                };
-                Jobine.prototype.userLogin = function () {
+                        .subscribe(jobs => this.jobList = jobs, error => this.errorMessage = error);
+                }
+                userLogin() {
                     this._router.navigate(['Login']);
-                };
-                Jobine = __decorate([
-                    core_1.Component({
-                        selector: 'jobine-comp',
-                        template: "\n  <div> \n    <paper-drawer-panel id=\"drPanel\">\n        <paper-header-panel id=\"sidePanel\" drawer>\n           <paper-toolbar id=\"sideToolbar\">\n             <paper-icon-button icon=\"home\" id=\"btnHome\"></paper-icon-button>\n             <paper-button active=\"!isLoggedin()\"  on-click=\"userLogin()\" id=\"btnLogin\">login</paper-button>\n          \n           </paper-toolbar>\n           <router-outlet></router-outlet>\n        </paper-header-panel>\n\n        <paper-header-panel id=\"mainPanel\" main>\n            <paper-toolbar id=\"mainToolbar\">\n                <paper-icon-button icon=\"menu\" paper-drawer-toggle  id=\"btnMainMenu\"></paper-icon-button>\n                <paper-tabs selected=\"0\">\n                    <paper-tab>MAP</paper-tab>\n                    <paper-tab>LIST</paper-tab>\n                </paper-tabs>  \n            </paper-toolbar>\n            <section id=\"section\">             \n                <iron-pages selected=\"0\">\n                  <div>  \n                    <google-map   latitude={{lat}} longitude={{long}} disableDefaultUI >\n                        <google-map-marker *ngFor=\"let marker of jobList\" latitude=\"{{marker.job.location.latitude}}\" longitude=\"{{marker.job.location.longitude}}\" title=\"{{marker.job.name}}\"></google-map-marker>\n                    </google-map>\n                  </div>\n                  <div id=\"listJob\">\n                  <li *ngFor=\"let marker of jobList\"  title=\"{{marker.job.name}}\">Name: {{marker.job.name}} description: {{marker.job.description}} </li>\n                  </div>                 \n                </iron-pages>\n                <paper-toolbar id=\"footToolbar\">\n                    <paper-button toggles class=\"fancy\" on-click=\"getJobs\" >Switch places</paper-button>\n                </paper-toolbar>\n            </section>\n\n        </paper-header-panel>\n    </paper-drawer-panel>\n   \n</div>\n  ",
-                        directives: [router_deprecated_1.ROUTER_DIRECTIVES],
-                        providers: [job_service_ts_1.JobService, http_1.HTTP_PROVIDERS, router_deprecated_1.ROUTER_PROVIDERS],
-                    }),
-                    router_deprecated_1.RouteConfig([
-                        { path: '/login', name: 'Login', component: login_1.Login },
-                        { path: '/Menu', name: 'Menu', component: menu_1.Menu }
-                    ]), 
-                    __metadata('design:paramtypes', [job_service_ts_1.JobService, router_deprecated_1.Router])
-                ], Jobine);
-                return Jobine;
-            }());
+                }
+            };
+            Jobine = __decorate([
+                core_1.Component({
+                    selector: 'jobine-comp',
+                    template: `
+  <div> 
+    <paper-drawer-panel id="drPanel">
+        <paper-header-panel id="sidePanel" drawer>
+           <paper-toolbar id="sideToolbar">
+             <paper-icon-button icon="home" id="btnHome"></paper-icon-button>
+             <paper-button active="!isLoggedin()"  on-click="userLogin()" id="btnLogin">login</paper-button>
+          
+           </paper-toolbar>
+           <router-outlet></router-outlet>
+        </paper-header-panel>
+
+        <paper-header-panel id="mainPanel" main>
+            <paper-toolbar id="mainToolbar">
+                <paper-icon-button icon="menu" paper-drawer-toggle  id="btnMainMenu"></paper-icon-button>
+                <paper-tabs selected="0">
+                    <paper-tab>MAP</paper-tab>
+                    <paper-tab>LIST</paper-tab>
+                </paper-tabs>  
+            </paper-toolbar>
+            <section id="section">             
+                <iron-pages id="pages" selected="0">
+                  <div>  
+                    <google-map   latitude={{lat}} longitude={{long}} disableDefaultUI >
+                        <google-map-marker *ngFor="let marker of jobList" latitude="{{marker.job.location.latitude}}" longitude="{{marker.job.location.longitude}}" title="{{marker.job.name}}"></google-map-marker>
+                    </google-map>
+                  </div>
+                  <div id="listJob">
+                  <li *ngFor="let marker of jobList"  title="{{marker.job.name}}">Name: {{marker.job.name}} description: {{marker.job.description}} </li>
+                  </div>                 
+                </iron-pages>
+                <paper-toolbar id="footToolbar">
+                    <paper-button toggles class="fancy" on-click="getJobs()" >Switch places</paper-button>
+                </paper-toolbar>
+            </section>
+
+        </paper-header-panel>
+    </paper-drawer-panel>
+   
+</div>
+  `,
+                    directives: [router_deprecated_1.ROUTER_DIRECTIVES],
+                    providers: [job_service_ts_1.JobService, http_1.HTTP_PROVIDERS, router_deprecated_1.ROUTER_PROVIDERS],
+                }),
+                router_deprecated_1.RouteConfig([
+                    { path: '/login', name: 'Login', component: login_1.Login },
+                    { path: '/Menu', name: 'Menu', component: menu_1.Menu }
+                ]), 
+                __metadata('design:paramtypes', [job_service_ts_1.JobService, router_deprecated_1.Router])
+            ], Jobine);
             exports_1("Jobine", Jobine);
         }
     }

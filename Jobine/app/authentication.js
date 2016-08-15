@@ -23,15 +23,14 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxj
             function (_1) {},
             function (_2) {}],
         execute: function() {
-            Authentication = (function () {
-                function Authentication(http) {
+            let Authentication = class Authentication {
+                constructor(http) {
                     this.http = http;
                     this.api_URL = 'http://localhost:4711/api';
                     this.token = localStorage.getItem('token');
                     this.http = http;
                 }
-                Authentication.prototype.login = function (username, password) {
-                    var _this = this;
+                login(username, password) {
                     return this.http.post(this.api_URL + '/login', JSON.stringify({
                         username: username,
                         password: password
@@ -40,30 +39,28 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxj
                             'Content-Type': 'application/json'
                         })
                     })
-                        .map(function (res) {
-                        var data = res.json();
-                        _this.token = data.profile.token;
-                        localStorage.setItem('token', _this.token);
+                        .map((res) => {
+                        let data = res.json();
+                        this.token = data.profile.token;
+                        localStorage.setItem('token', this.token);
                     });
-                };
-                Authentication.prototype.logout = function () {
-                    var _this = this;
+                }
+                logout() {
                     return this.http.get(this.api_URL + '/logout', {
                         headers: new http_1.Headers({
                             'x-security-token': this.token
                         })
                     })
-                        .map(function (res) {
-                        _this.token = undefined;
+                        .map((res) => {
+                        this.token = undefined;
                         localStorage.removeItem('token');
                     });
-                };
-                Authentication = __decorate([
-                    core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_1.Http])
-                ], Authentication);
-                return Authentication;
-            }());
+                }
+            };
+            Authentication = __decorate([
+                core_1.Injectable(), 
+                __metadata('design:paramtypes', [http_1.Http])
+            ], Authentication);
             exports_1("Authentication", Authentication); /**
              * Created by Alain on 5/10/2016.
              */

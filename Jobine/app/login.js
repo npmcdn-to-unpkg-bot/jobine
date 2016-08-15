@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/common', '@angular/router-deprecated', './authentication'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/common', '@angular/router-deprecated', '@vaadin/angular2-polymer', './authentication'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_deprecated_1, authentication_1;
+    var core_1, common_1, router_deprecated_1, angular2_polymer_1, authentication_1;
     var Login;
     return {
         setters:[
@@ -23,12 +23,15 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
             function (router_deprecated_1_1) {
                 router_deprecated_1 = router_deprecated_1_1;
             },
+            function (angular2_polymer_1_1) {
+                angular2_polymer_1 = angular2_polymer_1_1;
+            },
             function (authentication_1_1) {
                 authentication_1 = authentication_1_1;
             }],
         execute: function() {
-            Login = (function () {
-                function Login(fb, auth, router) {
+            let Login = class Login {
+                constructor(fb, auth, router) {
                     this.auth = auth;
                     this.router = router;
                     this.error = false;
@@ -37,25 +40,41 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                         password: ['', common_1.Validators.required]
                     });
                 }
-                Login.prototype.submitForm = function (value) {
-                    var _this = this;
+                submitForm(value) {
                     this.auth.login(value.username, value.password)
-                        .subscribe(function (token) {
+                        .subscribe((token) => {
                         var btnLogin = document.querySelector('#btnLogin');
                         btnLogin.hidden = true;
-                        _this.router.navigate(['../Menu']);
-                    }, function () { _this.error = true; });
-                };
-                Login = __decorate([
-                    core_1.Component({
-                        selector: 'login',
-                        directives: [common_1.FORM_DIRECTIVES, common_1.NgIf],
-                        template: "\n    <form [ngFormModel]=\"form\" (submit)=\"onSubmit(form.value)\">\n      <div *ngIf=\"error\">Check your user name or password</div>\n      <div>\n       <paper-input id=\"username\" name=\"username\" error-message=\"Invalide\" label=\"Username\"></paper-input>\n      </div>\n      <div>\n        <paper-input id=\"password\" name=\"password\" type=\"password\"></paper-input>\n      </div>\n      <div class=\"form-group\">\n        <paper-button raised on-click=\"submitForm()\"   >submit</paper-button>\n      </div>\n    </form>\n  "
-                    }), 
-                    __metadata('design:paramtypes', [common_1.FormBuilder, authentication_1.Authentication, router_deprecated_1.Router])
-                ], Login);
-                return Login;
-            }());
+                        this.router.navigate(['../Menu']);
+                    }, () => { this.error = true; });
+                }
+            };
+            Login = __decorate([
+                core_1.Component({
+                    selector: 'login',
+                    directives: [
+                        common_1.FORM_DIRECTIVES,
+                        common_1.NgIf,
+                        angular2_polymer_1.PolymerElement('paper-input'),
+                        angular2_polymer_1.PolymerElement('paper-button'),
+                    ],
+                    template: `
+    <form [ngFormModel]="form" (submit)="onSubmit(form.value)">
+      <div *ngIf="error">Check your user name or password</div>
+      <div>
+       <paper-input id="username" name="username" error-message="Invalide" label="Username"></paper-input>
+      </div>
+      <div>
+        <paper-input id="password" name="password" type="password"></paper-input>
+      </div>
+      <div class="form-group">
+        <paper-button raised on-click="submitForm()"   >submit</paper-button>
+      </div>
+    </form>
+  `
+                }), 
+                __metadata('design:paramtypes', [common_1.FormBuilder, authentication_1.Authentication, router_deprecated_1.Router])
+            ], Login);
             exports_1("Login", Login);
         }
     }

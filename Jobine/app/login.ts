@@ -5,11 +5,17 @@
 import {Component} from '@angular/core';
 import {FORM_DIRECTIVES, FormBuilder, Validators, ControlGroup, NgIf} from '@angular/common';
 import {Router} from '@angular/router-deprecated';
+import { PolymerElement } from '@vaadin/angular2-polymer';
 import {Authentication} from './authentication';
 
 @Component({
     selector: 'login',
-    directives: [ FORM_DIRECTIVES, NgIf ],
+    directives: [
+        FORM_DIRECTIVES,
+        NgIf ,
+        PolymerElement('paper-input'),
+        PolymerElement('paper-button'),
+    ],
     template: `
     <form [ngFormModel]="form" (submit)="onSubmit(form.value)">
       <div *ngIf="error">Check your user name or password</div>
@@ -25,7 +31,6 @@ import {Authentication} from './authentication';
     </form>
   `
 })
-
 export class Login {
     form: ControlGroup;
     error: boolean = false;
@@ -40,7 +45,7 @@ export class Login {
         this.auth.login(value.username, value.password)
             .subscribe(
                 (token: any) => {
-                    var btnLogin = document.querySelector('#btnLogin');
+                    var btnLogin = <HTMLElement>document.querySelector('#btnLogin');
                     btnLogin.hidden = true;
                     this.router.navigate(['../Menu'])},
                         () => { this.error = true; }
