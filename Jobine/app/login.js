@@ -41,7 +41,9 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                     });
                 }
                 submitForm(value) {
-                    this.auth.login(value.username, value.password)
+                    //var username = this.form.controls['username'].value;
+                    //var password = this.form.controls['password'].value;
+                    this.auth.login(this._username, this._password)
                         .subscribe((token) => {
                         var btnLogin = document.querySelector('#btnLogin');
                         btnLogin.hidden = true;
@@ -58,14 +60,15 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                         angular2_polymer_1.PolymerElement('paper-input'),
                         angular2_polymer_1.PolymerElement('paper-button'),
                     ],
+                    providers: [common_1.FormBuilder],
                     template: `
     <form [ngFormModel]="form" (submit)="onSubmit(form.value)">
       <div *ngIf="error">Check your user name or password</div>
       <div>
-       <paper-input id="username" name="username" error-message="Invalide" label="Username"></paper-input>
+       <paper-input id="username" name="username" [(value)]="_username" error-message="Invalide" label="Username"></paper-input>
       </div>
       <div>
-        <paper-input id="password" name="password" type="password"></paper-input>
+        <paper-input id="password" name="password" [(value)]="_password" type="password"></paper-input>
       </div>
       <div class="form-group">
         <paper-button raised on-click="submitForm()"   >submit</paper-button>

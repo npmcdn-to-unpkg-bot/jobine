@@ -16,14 +16,15 @@ import {Authentication} from './authentication';
         PolymerElement('paper-input'),
         PolymerElement('paper-button'),
     ],
+    providers: [FormBuilder],
     template: `
     <form [ngFormModel]="form" (submit)="onSubmit(form.value)">
       <div *ngIf="error">Check your user name or password</div>
       <div>
-       <paper-input id="username" name="username" error-message="Invalide" label="Username"></paper-input>
+       <paper-input id="username" name="username" [(value)]="_username" error-message="Invalide" label="Username"></paper-input>
       </div>
       <div>
-        <paper-input id="password" name="password" type="password"></paper-input>
+        <paper-input id="password" name="password" [(value)]="_password" type="password"></paper-input>
       </div>
       <div class="form-group">
         <paper-button raised on-click="submitForm()"   >submit</paper-button>
@@ -34,6 +35,8 @@ import {Authentication} from './authentication';
 export class Login {
     form: ControlGroup;
     error: boolean = false;
+    _username:string;
+    _password:string;
     constructor(fb: FormBuilder, public auth: Authentication, public router: Router) {
         this.form = fb.group({
             username:  ['', Validators.required],
@@ -42,7 +45,9 @@ export class Login {
     }
 
     submitForm(value: any) {
-        this.auth.login(value.username, value.password)
+        //var username = this.form.controls['username'].value;
+        //var password = this.form.controls['password'].value;
+        this.auth.login(this._username, this._password)
             .subscribe(
                 (token: any) => {
                     var btnLogin = <HTMLElement>document.querySelector('#btnLogin');
