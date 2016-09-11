@@ -38,7 +38,7 @@
       '@angular/upgrade'
   ];
 
-  // add map entries for angular packages in the form '@angular/common': 'https://npmcdn.com/@angular/common@0.0.0-3'
+  // add map entries for angular packages in the form '@angular/common': 'https://unpkg.com/@angular/common@0.0.0-3'
   packageNames.forEach(function(pkgName) {
     map[pkgName] = 'node_modules/' + pkgName ;
   });
